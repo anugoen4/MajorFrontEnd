@@ -1,0 +1,51 @@
+.ErrorPage{
+    width: 80vw;
+    height: 60vh;
+    margin: 50px;
+    margin-top: 60px;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    align-content: center;
+}
+
+.ErrorPage__header{
+    color: red;
+    text-align: center;
+    font-size: 7rem;
+}
+
+
+.ErrorPage__header__2{
+    color: black;
+    text-align: center;
+    font-size: 3rem;
+}
+
+.ErrorPage__header__message{
+    color: black;
+    text-align: center;
+    font-size: 3rem;
+}
+
+
+.ErrorPage__header__message__url{
+    color: black;
+    text-align: center;
+    font-size: 3rem;
+}
+
+.ErrorPage__button{
+    top:100px;
+    text-align: center;
+    padding: 50px;
+}
+
+.ErrorPage__button > button{
+    padding: 10px;
+    width: 50vw;
+    background-color: white;
+    border: none;
+    font-size: 20px;
+}
+

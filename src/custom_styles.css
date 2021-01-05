@@ -1,0 +1,13 @@
+.outer_container_background{
+    background-image: url('./assets/background.jpg');
+    width: 100%;
+    text-align: center;
+    justify-items: center;
+    background-repeat: tile;
+    background-size: cover;
+
+    margin-left: 20px;
+    border: 1px solid #f2f2f2;
+    flex : 0.85;
+    padding: 20px;
+}
