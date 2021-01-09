@@ -11,7 +11,7 @@ export default class Data extends Component {
 
     return (
       <div className = "outer_container_background">
-         Welcome to Student Convenience Portal
+         Welcome to Student Convenience Portal - Divyanshi
         <hr />
         This will be landing page for news Feeds
         {/* {email} */}
