@@ -16,7 +16,7 @@ export default class Data extends Component {
         This will be landing page for news Feeds - Venky
         {/* {email} */}
         <hr />
-        This will be landing page for Department Fee
+        This will be landing page for Department Fee - Parul
         {/* {password} */}
         <hr />
         This will be landing page for Club Feed
