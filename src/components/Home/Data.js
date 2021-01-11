@@ -13,7 +13,7 @@ export default class Data extends Component {
       <div className = "outer_container_background">
          Welcome to Student Convenience Portal - Divyanshi
         <hr />
-        This will be landing page for news Feeds
+        This will be landing page for news Feeds - Venky
         {/* {email} */}
         <hr />
         This will be landing page for Department Fee
