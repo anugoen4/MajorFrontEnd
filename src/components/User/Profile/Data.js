@@ -52,6 +52,7 @@ export default class Data extends Component {
   }
 
   async componentDidMount(){
+    setInterval(() => this.setState({ time: Date.now()}), 10000)
     try{
       const responseJson = await axios.get('/fetchSubjectEnrollments/17103034', {
         headers: {
@@ -73,9 +74,6 @@ export default class Data extends Component {
         
     }
 
-    componentDidMount() {
-      setInterval(() => this.setState({ time: Date.now()}), 1000)
-    }
     
   render() {
     const email = JSON.parse(localStorage.getItem('user_login'))?.data.email;
