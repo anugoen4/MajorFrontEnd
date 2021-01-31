@@ -111,6 +111,13 @@ class Login extends Component {
     }
 
   render() {
+    const email = JSON.parse(localStorage.getItem('user_login'))?.data.email;
+    const password = JSON.parse(localStorage.getItem('user_login'))?.data.password;
+    const type = JSON.parse(localStorage.getItem('user_login'))?.data.type;
+
+    if(email && password && type){
+        this.props.history.push('/home')
+    }
     return (
         <>
         <div className = "OuterContainer">
