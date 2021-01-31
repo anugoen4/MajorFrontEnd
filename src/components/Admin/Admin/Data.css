@@ -1,0 +1,18 @@
+.OuterContainer__Data__Admin{
+    margin-left: 20px;
+    border: 1px solid #f2f2f2;
+    height: 100%;
+    flex : 0.85;
+    padding: 20px;
+}
+
+.HeadRow__Data__Admin{
+    padding: 20px;
+    height: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: brown;
+    margin-bottom: 20px;
+    font-family: cursive;
+    font-weight: bold;
+}

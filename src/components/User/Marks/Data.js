@@ -4,12 +4,12 @@ import {
   CardTitle, CardSubtitle, Button
 } from 'reactstrap';
 import './Data.css'
-import '../../custom_styles.css'
+import '../../../custom_styles.css'
 import axios from 'axios'
 import { LoopCircleLoading } from 'react-loadingg';
 import {Animated} from "react-animated-css";
 import shortid from 'shortid';
-
+import {Link, Redirect} from 'react-router-dom';
 
 function MarksCard({evaluationType, marksObtained, maximumMarks, description}){
   return (
@@ -133,7 +133,22 @@ async componentDidMount(){
       
   }
 
-  render() {
+  componentDidMount() {
+    setInterval(() => this.setState({ time: Date.now()}), 1000)
+  }
+  
+render() {
+  const email = JSON.parse(localStorage.getItem('user_login'))?.data.email;
+  const password = JSON.parse(localStorage.getItem('user_login'))?.data.password;
+  const type = JSON.parse(localStorage.getItem('user_login'))?.data.type;
+
+  if(email === undefined){
+    return(
+      <>
+          <Redirect to = "/" />
+      </>
+    )
+  }
     
     if(this.state.resp === null){
       return(

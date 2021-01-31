@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import './Data.css'
 import Avatar from '@material-ui/core/Avatar';
-import Image from '../../assets/anurag.jpg'
+import Image from '../../../assets/anurag.jpg'
 import {
   Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button
 } from 'reactstrap';
-import '../../custom_styles.css'
+import '../../../custom_styles.css'
 import axios from 'axios'
 import { LoopCircleLoading } from 'react-loadingg';
-
+import {Link, Redirect} from 'react-router-dom'
 
 
 function ProfileHeaderCard({onClick, courseCode, courseName}){
@@ -73,11 +73,22 @@ export default class Data extends Component {
         
     }
 
-  render() {
-    const email = JSON.parse(localStorage.getItem('user_login'))?.data.email;
-    const password = JSON.parse(localStorage.getItem('user_login'))?.data.password;
-    const type = JSON.parse(localStorage.getItem('user_login'))?.data.type;
-
+    componentDidMount() {
+      setInterval(() => this.setState({ time: Date.now()}), 1000)
+    }
+    render() {
+      const email = JSON.parse(localStorage.getItem('admin_login'))?.data.email;
+      const password = JSON.parse(localStorage.getItem('admin_login'))?.data.password;
+      const type = JSON.parse(localStorage.getItem('admin_login'))?.data.type;
+     
+  
+      if(email === undefined){
+        return(
+          <>
+              <Redirect to = "/" />
+          </>
+        )
+      }
     if(this.state.resp === null){
       return(
         <LoopCircleLoading color = "red"/>

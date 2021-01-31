@@ -5,8 +5,9 @@ import {
 } from 'reactstrap';
 import Avatar from '@material-ui/core/Avatar';
 import './Data.css'
-import '../../custom_styles.css'
+import '../../../custom_styles.css'
 import axios from 'axios'
+import {Link, Redirect} from 'react-router-dom';
 import { LoopCircleLoading } from 'react-loadingg';
 import {Animated} from "react-animated-css";
 
@@ -21,7 +22,7 @@ function LibrayCard({id,bookId, author, title, description, edition, issueDate, 
   }
 
   
-  
+
 
   return (
     <div className = "col-xsm-12 col-sm-6 col-md-6 col-lg-3 my-3 d-flex justify-content-start">
@@ -93,6 +94,8 @@ export default class Data extends Component {
     }
   }
 
+ 
+
   async componentDidMount(){
     try{
       const responseJson = await axios.get('/fetchBooks/17103034', {
@@ -115,8 +118,23 @@ export default class Data extends Component {
         
     }
 
+    componentDidMount() {
+      setInterval(() => this.setState({ time: Date.now()}), 1000)
+    }
 
   render() {
+    const email = JSON.parse(localStorage.getItem('user_login'))?.data.email;
+    const password = JSON.parse(localStorage.getItem('user_login'))?.data.password;
+    const type = JSON.parse(localStorage.getItem('user_login'))?.data.type;
+
+    if(email === undefined){
+      return(
+        <>
+            <Redirect to = "/" />
+        </>
+      )
+    }
+
     if(this.state.resp === null){
       return(
         <LoopCircleLoading color = "red"/>

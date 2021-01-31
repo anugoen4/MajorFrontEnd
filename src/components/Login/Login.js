@@ -106,7 +106,8 @@ class Login extends Component {
             this.props.history.push('/home')
             // return <Redirect to="/home" />
         }else{
-            alert("Admin")
+            localStorage.setItem("admin_login", JSON.stringify({'data': obj}))
+            this.props.history.push('/admin')
         }
     }
 
@@ -115,8 +116,14 @@ class Login extends Component {
     const password = JSON.parse(localStorage.getItem('user_login'))?.data.password;
     const type = JSON.parse(localStorage.getItem('user_login'))?.data.type;
 
-    if(email && password && type){
+    const admin_email = JSON.parse(localStorage.getItem('admin_login'))?.data.email;
+    const admin_password = JSON.parse(localStorage.getItem('admin_login'))?.data.password;
+    const admin_type = JSON.parse(localStorage.getItem('admin_login'))?.data.type;
+
+    if(email && password && type === '0'){
         this.props.history.push('/home')
+    }else if(admin_email && admin_password && admin_type === '1'){
+        this.props.history.push('/admin')
     }
     return (
         <>

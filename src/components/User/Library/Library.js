@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import NavBar from '../NavBar/NavBar'
+import NavBar from '../../NavBar/NavBar'
 import DataLibrary from './Data'
 import SideBar from '../SideBar/SideBar'
 import './Library.css'

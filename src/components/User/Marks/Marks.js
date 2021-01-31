@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import NavBar from '../NavBar/NavBar'
+import NavBar from '../../NavBar/NavBar'
 import SideBar from '../SideBar/SideBar'
 import DataMarks from './Data'
 import './Marks.css'
