@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import NavBar from '../../NavBar/NavBar'
 import AdminSideBar from '../AdminSideBar/AdminSideBar'
 import DataAdminPage from './Data'
-import './AdminPage.css'
+import './AdminQuizPost.css'
 
-class AdminPage extends Component {
+class AdminQuizPost extends Component {
   render(){
     return (
       <>
         <NavBar />
-        <div className = "OuterContainer__AdminPage">
-          <AdminSideBar selectPage = "adminpage"/>
+        <div className = "OuterContainer__AdminQuizPost">
+          <AdminSideBar selectPage = "adminquizpost"/>
           <DataAdminPage />
         </div>
      </>
@@ -18,4 +18,4 @@ class AdminPage extends Component {
   }
 }
 
-export default AdminPage;
+export default AdminQuizPost;

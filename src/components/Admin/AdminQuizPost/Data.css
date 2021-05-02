@@ -1,4 +1,4 @@
-.OuterContainer__Data__AdminPage{
+.OuterContainer__Data__AdminQuizPost{
     margin-left: 20px;
     border: 1px solid #f2f2f2;
     height: 100%;
@@ -6,11 +6,17 @@
     padding: 20px;
 }
 
-.HeadRow__Data__AdminPage{
+.HeadRow__Data__AdminQuizPost{
     padding: 20px;
     height: 70px;
     font-size: 35px;
     color: brown;
     font-family: cursive;
     font-weight: bold;
+}
+
+.InnerContainer__Data__AdminQuizPost{
+    width:400px;
+    margin: auto;
+    padding-top: 50px;
 }

@@ -22,7 +22,7 @@ export default class SideBar extends Component {
     return (
       <div className = "OuterContainer__AdminSideBar">
         <AdminSideBarRow link = 'admin' selected = {this.state.selectedPage === 'admin'} Icon = {HomeIcon} title = "Home Admin"/>
-        <AdminSideBarRow link = 'adminpage' selected = {this.state.selectedPage === 'adminpage'} Icon = {LibraryBooksIcon} title = "Admin Page"/>
+        <AdminSideBarRow link = 'adminquizpost' selected = {this.state.selectedPage === 'adminquizpost'} Icon = {LibraryBooksIcon} title = "Admin Quiz Post"/>
         {/* <AdminSideBarRow link = 'marks' selected = {this.state.selectedPage === 'marks'} Icon = {SchoolIcon} title = "Marks"/> */}
         {/* <AdminSideBarRow link = 'attendance' selected = {this.state.selectedPage === 'attendance'} Icon = {PermContactCalendarIcon} title = "Attendance"/> */}
 	      <br />
