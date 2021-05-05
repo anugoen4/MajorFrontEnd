@@ -57,17 +57,18 @@ export default class Data extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.state = {
       resp: null,
-      quizSubjectCode: null,
-      quizTitle : "",
-      quizInstructions : "",
-      quizDate : '',
+      assignmentSubjectCode: null,
+
+      assignmentTitle : "",
+      assignmentDescription : "",
+      assignmentDate : '',
       syllabus: '',
-      quizTimings: ''    
+      assignmentTimings: ''    
     }
 
     this.onSubmit = this.onSubmit.bind(this)
     this.onChangeQuizTitle = this.onChangeQuizTitle.bind(this)
-    this.onChangeQuizInstructions = this.onChangeQuizInstructions.bind(this)
+    this.onChangeQuizDescription = this.onChangeQuizDescription.bind(this)
     this.onChangeQuizDate = this.onChangeQuizDate.bind(this)
     this.onChangesyllabus = this.onChangesyllabus.bind(this)
     this.onChangeQuizTimings = this.onChangeQuizTimings.bind(this)
@@ -76,19 +77,19 @@ export default class Data extends Component {
 
 onChangeQuizTitle(event){
   this.setState({
-      quizTitle : event.target.value
+      assignmentTitle : event.target.value
   })
 }
 
-onChangeQuizInstructions(event){
+onChangeQuizDescription(event){
   this.setState({
-      quizInstructions : event.target.value
+      assignmentDescription : event.target.value
   })
 }
 
 onChangeQuizDate(event){
   this.setState({
-      quizDate : event.target.value
+      assignmentDate : event.target.value
   })
 }
 
@@ -100,7 +101,7 @@ onChangesyllabus(event){
 
 onChangeQuizTimings(event){
   this.setState({
-      quizTimings : event.target.value
+      assignmentTimings : event.target.value
   })
 }
 
@@ -109,42 +110,41 @@ onChangeQuizTimings(event){
 onSubmit(event){
   event.preventDefault();
   const obj = {
-      quizTitle :this.state.quizTitle,
-      quizDate : this.state.quizDate,
-      quizTimings: this.state.quizTimings,
-      syllabus: this.state.syllabus,
-      quizInstructions : this.state.quizInstructions,
+      assignmentTitle :this.state.assignmentTitle,
+      deadlineDate : this.state.assignmentDate,
+      deadlineTimings: this.state.assignmentTimings,
+      description : this.state.assignmentDescription,
   }
 
-    axios.post(`/teacher/postAQuiz?teacherId=1&courseCode=${this.state.quizSubjectCode}`,obj)
+    axios.post(`/teacher/postAnAssignment?teacherId=1&courseCode=${this.state.assignmentSubjectCode}`,obj)
     .then((response) => {
         console.log(response);
     })
 
-    alert("Posted")
-    this.setState({
-      quizTitle : "",
-      quizInstructions : "",
-      quizDate : '',
-      syllabus: '',
-      quizTimings: ''
-    })
+      console.log(obj)
+      alert("Posted")
+      this.setState({
+        assignmentTitle : "",
+        assignmentDescription : "",
+        assignmentDate : '',
+        syllabus: '',
+        assignmentTimings: ''
+      })
 }
 
 handleClick(id){
   this.setState({
-    quizSubjectCode: id,
-    quizTitle : "",
-    quizInstructions : "",
-    quizDate : '',
+    assignmentSubjectCode: id,
+    assignmentTitle : "",
+    assignmentDescription : "",
+    assignmentDate : '',
     syllabus: '',
-    quizTimings: ''
+    assignmentTimings: ''
   })
 }
 
-
 async componentDidMount(){
-  setInterval(() => this.setState({ time: Date.now()}), 100000)
+  setInterval(() => this.setState({ time: Date.now()}), 1000)
   try{
     const responseJson = await axios.get('/teacher/fetchSubjectForATeacher/1', {
       headers: {
@@ -156,15 +156,15 @@ async componentDidMount(){
      await setAsyncTimeout(() => {
       this.setState({
         resp: JSON.parse(JSON.stringify(responseJson.data))
-        // resp: this.state.res
-       })
-  }, 1000);
-
+      })
+      console.log(this.state.resp)
+    }, 1000);
   }catch(error){
     console.log(error)
   }
-  }
+ 
       
+  }
 
   render() {
     const email = JSON.parse(localStorage.getItem('admin_login'))?.data.email;
@@ -184,7 +184,7 @@ async componentDidMount(){
         <LoopCircleLoading color = "red"/>
       )
     }else{
-      if(this.state.quizSubjectCode === null){
+      if(this.state.assignmentSubjectCode === null){
         return (
           <div className = "outer_container_background">
             <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
@@ -192,10 +192,10 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                          subjectCode = {this.state.quizSubjectCode}
-                          onClick={this.handleClick}
-                          courseCode = {item.courseCode}
-                          courseName = {item.courseName}/>
+                        subjectCode = {this.state.assignmentSubjectCode}
+                        onClick={this.handleClick}
+                        courseCode = {item.courseCode}
+                        courseName = {item.courseName}/>
                       )
                     })
                   }
@@ -210,7 +210,7 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                        subjectCode = {this.state.quizSubjectCode}
+                        subjectCode = {this.state.assignmentSubjectCode}
                         onClick={this.handleClick}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}/>
@@ -220,14 +220,14 @@ async componentDidMount(){
             </div>
             
 
-            <div className = "InnerContainer__Data__AdminQuizPost">
+            <div className = "InnerContainer__Data__AdminAssignmentPost">
                 <form onSubmit = {this.onSubmit}>
                     <div className = "form-group">
                         <div style = {{marginRight: "15px", width: "400px"}}>
                             <label>Title :</label>
                             <input type = "text" 
                                 className = "form-control"
-                                value = {this.state.quizTitle}
+                                value = {this.state.assignmentTitle}
                                 onChange = {this.onChangeQuizTitle}
                             />
                         </div>
@@ -236,20 +236,20 @@ async componentDidMount(){
                     <div className = "form-group">
                       <div className = "form-check form-check-inline">
                         <div style = {{marginRight: "15px"}}>
-                          <label>Date :</label>
+                          <label>DeadLine Date :</label>
                           <input type = "text" 
                               className = "form-control"
                               placeholder = "DD/MM/YYYY"
-                              value = {this.state.quizDate}
+                              value = {this.state.assignmentDate}
                               onChange = {this.onChangeQuizDate}
                           />
                         </div>
 
                         <div style = {{marginRight: "-10px"}}>
-                        <label>Timings :</label>
+                        <label>DeadLine Timings :</label>
                           <input type = "text" 
                               className = "form-control"
-                              value = {this.state.quizTimings}
+                              value = {this.state.assignmentTimings}
                               onChange = {this.onChangeQuizTimings}
                           />
                         </div>
@@ -257,20 +257,11 @@ async componentDidMount(){
                     </div>
 
                     <div className = "form-group">
-                        <label>Instructions :</label>
+                        <label>Description :</label>
                         <textarea
                             className = "form-control"
-                            value = {this.state.quizInstructions}
-                            onChange = {this.onChangeQuizInstructions}
-                        />
-                    </div>
-
-                    <div className = 'form-group'>
-                        <label>Syllabus :</label>
-                        <textarea
-                            className = "form-control"
-                            value = {this.state.syllabus}
-                            onChange = {this.onChangesyllabus}
+                            value = {this.state.assignmentDescription}
+                            onChange = {this.onChangeQuizDescription}
                         />
                     </div>
 

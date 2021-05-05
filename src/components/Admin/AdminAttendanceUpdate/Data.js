@@ -57,50 +57,41 @@ export default class Data extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.state = {
       resp: null,
-      quizSubjectCode: null,
-      quizTitle : "",
-      quizInstructions : "",
-      quizDate : '',
-      syllabus: '',
-      quizTimings: ''    
+      attendanceSubjectCode: null,
+      attendanceFileUpload: null,
+      attendanceFileUploadName : "No File Chosen",
+      attendanceDate : "",
+      attendanceCount: null,    
     }
 
     this.onSubmit = this.onSubmit.bind(this)
-    this.onChangeQuizTitle = this.onChangeQuizTitle.bind(this)
-    this.onChangeQuizInstructions = this.onChangeQuizInstructions.bind(this)
-    this.onChangeQuizDate = this.onChangeQuizDate.bind(this)
-    this.onChangesyllabus = this.onChangesyllabus.bind(this)
-    this.onChangeQuizTimings = this.onChangeQuizTimings.bind(this)
+    this.onChangeAttendanceFileUpload = this.onChangeAttendanceFileUpload.bind(this)
+    this.onChangeAttendanceDate = this.onChangeAttendanceDate.bind(this)
+    this.onChangeAttendanceCount = this.onChangeAttendanceCount.bind(this)
   
 }
 
-onChangeQuizTitle(event){
+
+onChangeAttendanceFileUpload(event){
+  event.preventDefault();
   this.setState({
-      quizTitle : event.target.value
+    attendanceFileUpload: event.target.files[0],
+    attendanceFileUploadName: event.target.files[0].name
+  })
+
+  
+}
+
+onChangeAttendanceDate(event){
+  this.setState({
+      attendanceDate : event.target.value
   })
 }
 
-onChangeQuizInstructions(event){
-  this.setState({
-      quizInstructions : event.target.value
-  })
-}
 
-onChangeQuizDate(event){
+onChangeAttendanceCount(event){
   this.setState({
-      quizDate : event.target.value
-  })
-}
-
-onChangesyllabus(event){
-  this.setState({
-      syllabus : event.target.value
-  })
-}
-
-onChangeQuizTimings(event){
-  this.setState({
-      quizTimings : event.target.value
+      attendanceCount : event.target.value
   })
 }
 
@@ -109,62 +100,70 @@ onChangeQuizTimings(event){
 onSubmit(event){
   event.preventDefault();
   const obj = {
-      quizTitle :this.state.quizTitle,
-      quizDate : this.state.quizDate,
-      quizTimings: this.state.quizTimings,
-      syllabus: this.state.syllabus,
-      quizInstructions : this.state.quizInstructions,
+      attendanceDate : this.state.attendanceDate,
+      attendanceCount: this.state.attendanceCount,
+      attendanceFileUpload : this.state.attendanceFileUpload,
   }
 
-    axios.post(`/teacher/postAQuiz?teacherId=1&courseCode=${this.state.quizSubjectCode}`,obj)
+  const formData = new FormData();
+  formData.append(
+    "file",
+    this.state.attendanceFileUpload,
+    this.state.attendanceFileUpload.name
+  )
+
+  console.log(this.state.attendanceFileUploadName)
+  console.log(formData)
+
+  // axios.post("api/uploadfile", formData);
+
+    axios.post(`/teacher/uploadAttendance?courseCode=${this.state.attendanceSubjectCode}&attendanceDate=${obj.attendanceDate}&attendanceCount=${obj.attendanceCount}`,formData)
     .then((response) => {
         console.log(response);
     })
 
-    alert("Posted")
+    alert("posted")
     this.setState({
-      quizTitle : "",
-      quizInstructions : "",
-      quizDate : '',
-      syllabus: '',
-      quizTimings: ''
+      attendanceFileUpload: null,
+      attendanceFileUploadName : "No File Chosen",
+      attendanceDate : '',
+      attendanceCount: 0
     })
+
 }
 
 handleClick(id){
   this.setState({
-    quizSubjectCode: id,
-    quizTitle : "",
-    quizInstructions : "",
-    quizDate : '',
-    syllabus: '',
-    quizTimings: ''
+    attendanceSubjectCode: id,
+    attendanceFileUpload: null,
+    attendanceFileUploadName : "No File Chosen",
+    attendanceDate : '',
+    attendanceCount: 0
   })
 }
 
-
 async componentDidMount(){
-  setInterval(() => this.setState({ time: Date.now()}), 100000)
+  setInterval(() => this.setState({ time:Date.now()}), 1000)
   try{
     const responseJson = await axios.get('/teacher/fetchSubjectForATeacher/1', {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
+        'Content-Count': 'application/json',
       }
     })
 
      await setAsyncTimeout(() => {
       this.setState({
         resp: JSON.parse(JSON.stringify(responseJson.data))
-        // resp: this.state.res
-       })
-  }, 1000);
-
+      })
+      console.log(this.state.resp)
+    }, 1000);
   }catch(error){
     console.log(error)
   }
-  }
+ 
       
+  }
 
   render() {
     const email = JSON.parse(localStorage.getItem('admin_login'))?.data.email;
@@ -184,7 +183,7 @@ async componentDidMount(){
         <LoopCircleLoading color = "red"/>
       )
     }else{
-      if(this.state.quizSubjectCode === null){
+      if(this.state.attendanceSubjectCode === null){
         return (
           <div className = "outer_container_background">
             <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
@@ -192,10 +191,10 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                          subjectCode = {this.state.quizSubjectCode}
-                          onClick={this.handleClick}
-                          courseCode = {item.courseCode}
-                          courseName = {item.courseName}/>
+                        subjectCode = {this.state.attendanceSubjectCode}
+                        onClick={this.handleClick}
+                        courseCode = {item.courseCode}
+                        courseName = {item.courseName}/>
                       )
                     })
                   }
@@ -210,7 +209,7 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                        subjectCode = {this.state.quizSubjectCode}
+                        subjectCode = {this.state.attendanceSubjectCode}
                         onClick={this.handleClick}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}/>
@@ -220,59 +219,56 @@ async componentDidMount(){
             </div>
             
 
-            <div className = "InnerContainer__Data__AdminQuizPost">
+            <div className = "InnerContainer__Data__AdminAttendanceUpdate">
                 <form onSubmit = {this.onSubmit}>
-                    <div className = "form-group">
-                        <div style = {{marginRight: "15px", width: "400px"}}>
-                            <label>Title :</label>
-                            <input type = "text" 
-                                className = "form-control"
-                                value = {this.state.quizTitle}
-                                onChange = {this.onChangeQuizTitle}
-                            />
-                        </div>
-                    </div>
+                    
 
                     <div className = "form-group">
                       <div className = "form-check form-check-inline">
                         <div style = {{marginRight: "15px"}}>
-                          <label>Date :</label>
+                          <label>Attendance Date :</label>
                           <input type = "text" 
                               className = "form-control"
+                              value = {this.state.attendanceDate}
+                              onChange = {this.onChangeAttendanceDate}
                               placeholder = "DD/MM/YYYY"
-                              value = {this.state.quizDate}
-                              onChange = {this.onChangeQuizDate}
                           />
                         </div>
 
                         <div style = {{marginRight: "-10px"}}>
-                        <label>Timings :</label>
-                          <input type = "text" 
-                              className = "form-control"
-                              value = {this.state.quizTimings}
-                              onChange = {this.onChangeQuizTimings}
-                          />
+                        <label>Attendance Count :</label>
+                            <input type = "text" 
+                                className = "form-control"
+                                value = {this.state.attendanceCount}
+                                onChange = {this.onChangeAttendanceCount}
+                                placeholder = "0"
+                            />
                         </div>
                       </div>
                     </div>
 
                     <div className = "form-group">
-                        <label>Instructions :</label>
-                        <textarea
-                            className = "form-control"
-                            value = {this.state.quizInstructions}
-                            onChange = {this.onChangeQuizInstructions}
-                        />
+                      <div className = "form-check form-check-inline">
+                        <div style = {{marginRight: "50px"}}>
+                          <label className = "file_upload"
+                            for = "fileUpload"
+                          >Choose a File: </label>
+                            <input
+                              id = "fileUpload"
+                              type = 'file' 
+                              className = "form-control"
+                              onChange = {this.onChangeAttendanceFileUpload}
+                              hidden
+                            />
+                        </div>
+
+                        <div style = {{marginLeft: "-15px"}}>
+                          {this.state.attendanceFileUploadName}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className = 'form-group'>
-                        <label>Syllabus :</label>
-                        <textarea
-                            className = "form-control"
-                            value = {this.state.syllabus}
-                            onChange = {this.onChangesyllabus}
-                        />
-                    </div>
+                   
 
                     <div className = "form-group">
                         <input type = "submit" 

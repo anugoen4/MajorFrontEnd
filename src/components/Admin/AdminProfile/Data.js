@@ -54,7 +54,7 @@ export default class Data extends Component {
   async componentDidMount(){
     setInterval(() => this.setState({ time: Date.now()}), 1000)
     try{
-      const responseJson = await axios.get('/fetchSubjectEnrollments/17103034', {
+      const responseJson = await axios.get('/teacher/fetchSubjectForATeacher/1', {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',

@@ -57,20 +57,21 @@ export default class Data extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.state = {
       resp: null,
+      
       quizSubjectCode: null,
+
       quizTitle : "",
-      quizInstructions : "",
-      quizDate : '',
-      syllabus: '',
-      quizTimings: ''    
+      quizFileUpload: null,
+      quizFileUploadName : "No File Chosen",
+      quizTotalMarks : 0,
+      quizType: 'QUIZ'    
     }
 
     this.onSubmit = this.onSubmit.bind(this)
     this.onChangeQuizTitle = this.onChangeQuizTitle.bind(this)
-    this.onChangeQuizInstructions = this.onChangeQuizInstructions.bind(this)
-    this.onChangeQuizDate = this.onChangeQuizDate.bind(this)
-    this.onChangesyllabus = this.onChangesyllabus.bind(this)
-    this.onChangeQuizTimings = this.onChangeQuizTimings.bind(this)
+    this.onChangeQuizFileUpload = this.onChangeQuizFileUpload.bind(this)
+    this.onChangeQuizTotalMarks = this.onChangeQuizTotalMarks.bind(this)
+    this.onChangeQuizType = this.onChangeQuizType.bind(this)
   
 }
 
@@ -80,27 +81,26 @@ onChangeQuizTitle(event){
   })
 }
 
-onChangeQuizInstructions(event){
+onChangeQuizFileUpload(event){
+  event.preventDefault();
   this.setState({
-      quizInstructions : event.target.value
+    quizFileUpload: event.target.files[0],
+    quizFileUploadName: event.target.files[0].name
+  })
+
+  
+}
+
+onChangeQuizTotalMarks(event){
+  this.setState({
+      quizTotalMarks : event.target.value
   })
 }
 
-onChangeQuizDate(event){
-  this.setState({
-      quizDate : event.target.value
-  })
-}
 
-onChangesyllabus(event){
+onChangeQuizType(event){
   this.setState({
-      syllabus : event.target.value
-  })
-}
-
-onChangeQuizTimings(event){
-  this.setState({
-      quizTimings : event.target.value
+      quizType : event.target.value
   })
 }
 
@@ -110,41 +110,51 @@ onSubmit(event){
   event.preventDefault();
   const obj = {
       quizTitle :this.state.quizTitle,
-      quizDate : this.state.quizDate,
-      quizTimings: this.state.quizTimings,
-      syllabus: this.state.syllabus,
-      quizInstructions : this.state.quizInstructions,
+      quizTotalMarks : this.state.quizTotalMarks,
+      quizType: this.state.quizType,
+      quizFileUpload : this.state.quizFileUpload,
   }
 
-    axios.post(`/teacher/postAQuiz?teacherId=1&courseCode=${this.state.quizSubjectCode}`,obj)
+  const formData = new FormData();
+  formData.append(
+    "file",
+    this.state.quizFileUpload,
+    this.state.quizFileUpload.name
+  )
+
+  console.log(this.state.quizFileUploadName)
+  console.log(formData)
+
+
+    axios.post(`/teacher/uploadMarks?courseCode=${this.state.quizSubjectCode}&description=${obj.quizTitle}&evaluationType=${this.state.quizType}&maximumMarks=${obj.quizTotalMarks}`,formData)
     .then((response) => {
         console.log(response);
     })
 
-    alert("Posted")
-    this.setState({
-      quizTitle : "",
-      quizInstructions : "",
-      quizDate : '',
-      syllabus: '',
-      quizTimings: ''
-    })
+      console.log(obj)
+      alert("Posted")
+      this.setState({
+        quizTitle : "",
+        quizFileUpload: null,
+        quizFileUploadName : "No File Chosen",
+        quizTotalMarks : 0,
+        quizType: 'QUIZ'
+      })
 }
 
 handleClick(id){
   this.setState({
     quizSubjectCode: id,
     quizTitle : "",
-    quizInstructions : "",
-    quizDate : '',
-    syllabus: '',
-    quizTimings: ''
+    quizFileUpload: null,
+    quizFileUploadName : "No File Chosen",
+    quizTotalMarks : 0,
+    quizType: 'QUIZ'
   })
 }
 
-
 async componentDidMount(){
-  setInterval(() => this.setState({ time: Date.now()}), 100000)
+  setInterval(() => this.setState({ time:Date.now()}), 1000)
   try{
     const responseJson = await axios.get('/teacher/fetchSubjectForATeacher/1', {
       headers: {
@@ -156,15 +166,15 @@ async componentDidMount(){
      await setAsyncTimeout(() => {
       this.setState({
         resp: JSON.parse(JSON.stringify(responseJson.data))
-        // resp: this.state.res
-       })
-  }, 1000);
-
+      })
+      console.log(this.state.resp)
+    }, 1000);
   }catch(error){
     console.log(error)
   }
-  }
+ 
       
+  }
 
   render() {
     const email = JSON.parse(localStorage.getItem('admin_login'))?.data.email;
@@ -192,10 +202,10 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                          subjectCode = {this.state.quizSubjectCode}
-                          onClick={this.handleClick}
-                          courseCode = {item.courseCode}
-                          courseName = {item.courseName}/>
+                        subjectCode = {this.state.quizSubjectCode}
+                        onClick={this.handleClick}
+                        courseCode = {item.courseCode}
+                        courseName = {item.courseName}/>
                       )
                     })
                   }
@@ -220,7 +230,7 @@ async componentDidMount(){
             </div>
             
 
-            <div className = "InnerContainer__Data__AdminQuizPost">
+            <div className = "InnerContainer__Data__AdminMarksUpdate">
                 <form onSubmit = {this.onSubmit}>
                     <div className = "form-group">
                         <div style = {{marginRight: "15px", width: "400px"}}>
@@ -236,43 +246,51 @@ async componentDidMount(){
                     <div className = "form-group">
                       <div className = "form-check form-check-inline">
                         <div style = {{marginRight: "15px"}}>
-                          <label>Date :</label>
+                          <label>Total Marks :</label>
                           <input type = "text" 
                               className = "form-control"
-                              placeholder = "DD/MM/YYYY"
-                              value = {this.state.quizDate}
-                              onChange = {this.onChangeQuizDate}
+                              value = {this.state.quizTotalMarks}
+                              onChange = {this.onChangeQuizTotalMarks}
                           />
                         </div>
 
                         <div style = {{marginRight: "-10px"}}>
-                        <label>Timings :</label>
-                          <input type = "text" 
-                              className = "form-control"
-                              value = {this.state.quizTimings}
-                              onChange = {this.onChangeQuizTimings}
-                          />
+                        <label>Type :</label>
+                          <select
+                            className = 'form-control'
+                            value = {this.state.quizType}
+                            onChange = {this.onChangeQuizType}
+                            style = {{width: "193px"}}
+                          >
+                            <option value={"QUIZ"}>Quiz</option>
+                            <option value={"ASSIGNMENT"}>Assignment</option>
+                          </select>
                         </div>
                       </div>
                     </div>
 
                     <div className = "form-group">
-                        <label>Instructions :</label>
-                        <textarea
-                            className = "form-control"
-                            value = {this.state.quizInstructions}
-                            onChange = {this.onChangeQuizInstructions}
-                        />
+                      <div className = "form-check form-check-inline">
+                        <div style = {{marginRight: "50px"}}>
+                          <label className = "file_upload"
+                            for = "fileUpload"
+                          >Choose a File: </label>
+                            <input
+                              id = "fileUpload"
+                              type = 'file' 
+                              className = "form-control"
+                              onChange = {this.onChangeQuizFileUpload}
+                              hidden
+                            />
+                        </div>
+
+                        <div style = {{marginLeft: "-15px"}}>
+                          {this.state.quizFileUploadName}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className = 'form-group'>
-                        <label>Syllabus :</label>
-                        <textarea
-                            className = "form-control"
-                            value = {this.state.syllabus}
-                            onChange = {this.onChangesyllabus}
-                        />
-                    </div>
+                   
 
                     <div className = "form-group">
                         <input type = "submit" 

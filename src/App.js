@@ -11,6 +11,9 @@ import Profile from './components/User/Profile/Profile'
 import ForgotPassword from './components/Login/ForgotPassword'
 import Admin from './components/Admin/Admin/Admin'
 import AdminQuizPost from './components/Admin/AdminQuizPost/AdminQuizPost'
+import AdminAssignmentPost from './components/Admin/AdminAssignmentPost/AdminAssignmentPost'
+import AdminMarksUpdate from './components/Admin/AdminMarksUpdate/AdminMarksUpdate'
+import AdminAttendanceUpdate from './components/Admin/AdminAttendanceUpdate/AdminAttendanceUpdate'
 import AdminProfile from './components/Admin/AdminProfile/AdminProfile'
 class App extends Component {
   render(){
@@ -27,6 +30,9 @@ class App extends Component {
           <Route path = "/logout" exact component = {Logout} />
           <Route path = "/admin"  exact component = {Admin} />
           <Route path = "/adminquizpost"  exact component = {AdminQuizPost} />
+          <Route path = "/adminassignmentpost"  exact component = {AdminAssignmentPost} />
+          <Route path = "/adminmarksupdate"  exact component = {AdminMarksUpdate} />
+          <Route path = "/adminattendanceupdate"  exact component = {AdminAttendanceUpdate} />
           <Route path = "/adminprofile" exact component = {AdminProfile}/>
           <Route path = "/"  component = {Default} />
           

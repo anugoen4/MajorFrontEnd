@@ -21,15 +21,16 @@ export default class SideBar extends Component {
   render() {
     return (
       <div className = "OuterContainer__AdminSideBar">
-        <AdminSideBarRow link = 'admin' selected = {this.state.selectedPage === 'admin'} Icon = {HomeIcon} title = "Home Admin"/>
-        <AdminSideBarRow link = 'adminquizpost' selected = {this.state.selectedPage === 'adminquizpost'} Icon = {LibraryBooksIcon} title = "Admin Quiz Post"/>
-        {/* <AdminSideBarRow link = 'marks' selected = {this.state.selectedPage === 'marks'} Icon = {SchoolIcon} title = "Marks"/> */}
-        {/* <AdminSideBarRow link = 'attendance' selected = {this.state.selectedPage === 'attendance'} Icon = {PermContactCalendarIcon} title = "Attendance"/> */}
+        <AdminSideBarRow link = 'admin' selected = {this.state.selectedPage === 'admin'} Icon = {HomeIcon} title = "Home"/>
+        <AdminSideBarRow link = 'adminquizpost' selected = {this.state.selectedPage === 'adminquizpost'} Icon = {LibraryBooksIcon} title = "Upload a Quiz"/>
+        <AdminSideBarRow link = 'adminassignmentpost' selected = {this.state.selectedPage === 'adminassignmentpost'} Icon = {LibraryBooksIcon} title = "Upload an Assignment"/>
+        <AdminSideBarRow link = 'adminmarksupdate' selected = {this.state.selectedPage === 'adminmarksupdate'} Icon = {LibraryBooksIcon} title = "Update Marks"/>
+        <AdminSideBarRow link = 'adminattendanceupdate' selected = {this.state.selectedPage === 'adminattendanceupdate'} Icon = {LibraryBooksIcon} title = "Update Attendance"/>
 	      <br />
         <br />
         <br />
         <br />
-        <AdminSideBarRow link = 'adminprofile' selected = {this.state.selectedPage === 'adminprofile'} Icon = {PersonIcon} title = "Admin Profile"/>
+        <AdminSideBarRow link = 'adminprofile' selected = {this.state.selectedPage === 'adminprofile'} Icon = {PersonIcon} title = "Profile"/>
         <AdminSideBarRow link = 'logout' selected = {this.state.selectedPage === 'logout'} Icon = {ExitToAppIcon} title = "Log Out"/>
       </div>
     )
