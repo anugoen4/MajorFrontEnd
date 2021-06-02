@@ -41,7 +41,7 @@ export default class Data extends Component {
       this.handleClick = this.handleClick.bind(this)
       this.state = {
         resp: null,
-        name: null
+        name: "Anurag Goenka"
       }
   }
 
@@ -125,9 +125,12 @@ export default class Data extends Component {
             <div className = "col-xsm-12 col-md-6 col-lg-6 my-3 d-flex justify-content-center">
               <Card className = "Card_style" style = {{borderRadius: "25px"}}>
                 <CardBody className = "CardBody_style" style = {{borderRadius: "25px"}} >
-                <CardTitle>Personal Details</CardTitle>
-                    <CardSubtitle>Name - {this.state.name}</CardSubtitle>
-                    <CardSubtitle>Age - 21</CardSubtitle>
+                  <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}>Personal Details</CardTitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Name -> {this.state.name}</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Age -> 21</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Blood Group -> O +ve</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Semester -> 8th</CardSubtitle>
+
                 </CardBody>
               </Card>
             </div>
@@ -135,9 +138,11 @@ export default class Data extends Component {
             <div className = "col-xsm-12 col-md-6 col-lg-6 my-3 d-flex justify-content-center">
             <Card className = "Card_style" style = {{borderRadius: "25px"}}>
                 <CardBody className = "CardBody_style" style = {{borderRadius: "25px"}}>
-                <CardTitle>Achievements</CardTitle>
-                    <CardSubtitle>Code Battle - 101</CardSubtitle>
-                    <CardSubtitle>ACM Chapter - 101</CardSubtitle>
+                  <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}>Achievements</CardTitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Code Battle -> 101</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>ACM Chapter -> 101</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Open House -> 2</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>PEC Buddy</CardSubtitle>
                 </CardBody>
               </Card>
             </div>
@@ -147,9 +152,11 @@ export default class Data extends Component {
             <div className = "col-xsm-12 col-md-6 col-lg-6 my-3 d-flex justify-content-center">
               <Card className = "Card_style" style = {{borderRadius: "25px"}}>
                 <CardBody className = "CardBody_style" style = {{borderRadius: "25px"}}>
-                <CardTitle>Clubs Enrolled</CardTitle>
-                    <CardSubtitle>IEEE</CardSubtitle>
-                    <CardSubtitle>Scc</CardSubtitle>
+                <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}>Clubs Enrolled</CardTitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>IEEE</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>SCC</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>ACM</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>PDC</CardSubtitle>
                 </CardBody>
               </Card>
             </div>
@@ -157,9 +164,11 @@ export default class Data extends Component {
             <div className = "col-xsm-12 col-md-6 col-lg-6 my-3 d-flex justify-content-center">
             <Card className = "Card_style" style = {{borderRadius: "25px"}}>
                 <CardBody className = "CardBody_style" style = {{borderRadius: "25px"}}>
-                <CardTitle>Hobbies</CardTitle>
-                    <CardSubtitle>Music</CardSubtitle>
-                    <CardSubtitle>Badminton</CardSubtitle>
+                <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}> Hobbies </CardTitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Music</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Reading</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Gaming</CardSubtitle>
+                  <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Badminton</CardSubtitle>
                 </CardBody>
               </Card>
             </div>

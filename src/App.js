@@ -15,6 +15,9 @@ import AdminAssignmentPost from './components/Admin/AdminAssignmentPost/AdminAss
 import AdminMarksUpdate from './components/Admin/AdminMarksUpdate/AdminMarksUpdate'
 import AdminAttendanceUpdate from './components/Admin/AdminAttendanceUpdate/AdminAttendanceUpdate'
 import AdminProfile from './components/Admin/AdminProfile/AdminProfile'
+import AdminAddEvalutaion from './components/Admin/AdminAddEvaluation/AdminAddEvaluation'
+import AdminPost from './components/Admin/AdminPost/AdminPost'
+
 class App extends Component {
   render(){
     return (
@@ -33,7 +36,9 @@ class App extends Component {
           <Route path = "/adminassignmentpost"  exact component = {AdminAssignmentPost} />
           <Route path = "/adminmarksupdate"  exact component = {AdminMarksUpdate} />
           <Route path = "/adminattendanceupdate"  exact component = {AdminAttendanceUpdate} />
+	        <Route path = "/adminaddevaluation" exact component = {AdminAddEvalutaion} />
           <Route path = "/adminprofile" exact component = {AdminProfile}/>
+          <Route path = "/adminpost" exact component = {AdminPost}/>
           <Route path = "/"  component = {Default} />
           
         </Switch>

@@ -23,7 +23,7 @@ function FeedCardA({assignmentSubjectCode, assignmentSubjectName, assignmentTitl
             <CardSubtitle style = {{fontWeight: "bold",textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{assignmentSubjectName}</CardSubtitle>
             <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{assignmentTitle}</CardSubtitle>
             <CardSubtitle style = {{textAlign: "left", marginLeft: "10px", fontFamily: 'cursive', marginTop : "5px"}}>Deadline Date --> {deadlineDate}</CardSubtitle>
-            <CardSubtitle style = {{textAlign: "left", marginLeft: "10px", fontFamily: 'cursive', marginTop : "5px"}}>Deadline Timings --> {deadlineTimings} %</CardSubtitle>
+            <CardSubtitle style = {{textAlign: "left", marginLeft: "10px", fontFamily: 'cursive', marginTop : "5px"}}>Deadline Timings --> {deadlineTimings}</CardSubtitle>
             <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>Description --> {description}</CardSubtitle>
           </CardBody>
         </Card>

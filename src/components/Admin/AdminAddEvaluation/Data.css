@@ -1,0 +1,36 @@
+.OuterContainer__Data__AdminAddEvaluation{
+    margin-left: 20px;
+    border: 1px solid #f2f2f2;
+    height: 100%;
+    flex : 0.85;
+    padding: 20px;
+}
+
+.HeadRow__Data__AdminAddEvaluation{
+    padding: 20px;
+    height: 70px;
+    font-size: 35px;
+    color: brown;
+    font-family: cursive;
+    font-weight: bold;
+}
+
+.InnerContainer__Data__AdminAddEvaluation{
+    width:400px;
+    margin: auto;
+    padding-top: 50px;
+}
+
+.file_upload{
+  background-color: indigo;
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.modal{
+
+}

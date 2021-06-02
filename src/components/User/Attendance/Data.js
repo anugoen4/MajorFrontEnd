@@ -104,7 +104,7 @@ export default class Data extends Component {
 
 
   async componentDidMount(){
-    setInterval(() => this.setState({ time: Date.now()}), 10000)
+    setInterval(() => this.setState({ time: Date.now()}), 20000)
     try{
       const responseJson = await axios.get('/fetchSubjectEnrollments/17103034', {
         headers: {
