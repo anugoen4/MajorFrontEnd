@@ -98,19 +98,19 @@ export default class Data extends Component {
 onChangeType(event){
   console.log(event)
   this.setState({
-      Type : event.label
+      type : event.label
   })
 }
 
 onChangeInstructions(event){
   this.setState({
-      Instructions : event.target.value
+      instructions : event.target.value
   })
 }
 
 onChangeDate(event){
   this.setState({
-      Date : event.target.value
+      date : event.target.value
   })
 }
 
@@ -122,7 +122,7 @@ onChangeSyllabus(event){
 
 onChangeTimings(event){
   this.setState({
-      Timings : event.target.value
+      timings : event.target.value
   })
 }
 
@@ -159,7 +159,7 @@ onSubmit(event){
 handleClick(id){
   this.setState({
     subjectCode: id,
-    type : "",
+    type : null,
     instructions : "",
     date : '',
     syllabus: '',
@@ -255,7 +255,7 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                        subjectCode = {this.state.SubjectCode}
+                        subjectCode = {this.state.subjectCode}
                         onClick={this.handleClick}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}/>
