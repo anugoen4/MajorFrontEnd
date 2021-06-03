@@ -30,18 +30,32 @@ function AttendanceCard({date, attendanceCount, attendanceStatus}){
   )
 }
 
-function ProfileHeaderCard({onClick, courseCode, courseName}){
-  return (
-    <div className = "col-xsm-6 col-sm-3 col-md-3 col-lg-2 my-3 d-flex justify-content-center">
-        <Card style={{ width: '12rem', borderRadius: "25px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}
-          onClick = {() => {onClick(courseCode, courseName)}}>
-          <CardBody>
-            <CardTitle style = {{fontSize: "18px", fontWeight: "bold", fontFamily: "cursive"}}>{courseCode}</CardTitle>
-            <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{courseName}</CardSubtitle>
-          </CardBody>
-        </Card>
-    </div>
-  )
+function ProfileHeaderCard({onClick, subjectCode, courseCode, courseName}){
+  if(subjectCode === courseCode){
+    return (
+      <div className = "col-xsm-12 col-sm-6 col-md-6 col-lg-2 my-3 d-flex justify-content-center">
+          <Card style={{ width: '12rem', borderRadius: "25px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", background: "lightblue"}}
+            onClick = {() => {onClick(courseCode, courseName)}}>
+            <CardBody>
+              <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}>{courseCode}</CardTitle>
+              <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{courseName}</CardSubtitle>
+            </CardBody>
+          </Card>
+      </div>
+    )
+  }else{
+    return (
+      <div className = "col-xsm-12 col-sm-6 col-md-6 col-lg-2 my-3 d-flex justify-content-center">
+          <Card style={{ width: '12rem', borderRadius: "25px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}
+            onClick = {() => {onClick(courseCode, courseName)}}>
+            <CardBody>
+              <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}>{courseCode}</CardTitle>
+              <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{courseName}</CardSubtitle>
+            </CardBody>
+          </Card>
+      </div>
+    )
+  }
 }
 
 function AttendanceRowCard({title, score}){
@@ -76,11 +90,12 @@ export default class Data extends Component {
       resp : null,
       subject:null,
       c_name : null,
-      c_code: null
+      c_code: null,
+      subjectCode: '',
     }
   }
 
-  async handleClick(courseCode,courseName){
+  async handleClick(courseCode, courseName){
     try{
       const responseJson = await axios.get(`/fetchAttendanceForASubject?id=17103034&courseCode=${courseCode}`, {
         headers: {
@@ -89,11 +104,14 @@ export default class Data extends Component {
         }
       })
 
+     
+
       await setAsyncTimeout(() => {
         this.setState({
           subject: JSON.parse(JSON.stringify(responseJson.data)),
           c_name: courseName,
-          c_code: courseCode
+          c_code: courseCode,
+          subjectCode: courseCode
          })
 
     },0);
@@ -113,6 +131,8 @@ export default class Data extends Component {
         }
       })
   
+
+      console.log(responseJson)
        await setAsyncTimeout(() => {
         this.setState({
           resp: JSON.parse(JSON.stringify(responseJson.data))
@@ -152,6 +172,7 @@ render() {
                   return(
                     <ProfileHeaderCard 
                     onClick={this.handleClick}
+                    subjectCode = {this.state.subjectCode}
                     courseCode = {item.courseCode}
                     courseName = {item.courseName}/>
                   )
@@ -173,7 +194,7 @@ render() {
                   <AttendanceRowCard 
                       key={shortid.generate()}
                       title = "Lectures Attended"
-                      finalMarks = {this.state.subject.data.totalLecturesAttended}
+                      score = {this.state.subject.data.totalLecturesAttended}
                   />
           </div>
          
@@ -210,6 +231,7 @@ render() {
                     return(
                       <ProfileHeaderCard 
                         onClick={this.handleClick}
+                        subjectCode = {this.state.subjectCode}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}
                       />

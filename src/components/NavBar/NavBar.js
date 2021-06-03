@@ -22,7 +22,7 @@ function Test() {
             
                 <div className = "NavBar__right">
                     <div className = "NavBar__right__content">
-                        <span className = "NavBar__right__option__1"> Hi , {email} </span>
+                        <span className = "NavBar__right__option__1"> Hi , Anurag Goenka </span>
                         <span className = "NavBar__right__option__2"> SID --> {SID} </span>
                     </div>
 

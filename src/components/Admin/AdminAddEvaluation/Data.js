@@ -288,7 +288,7 @@ async componentDidMount(){
             
             <div>
               <Button style = {{backgroundColor: "green"}}
-               onClick = {() => {this.handleAddEvalCard()}}>Add Evaluation Criteria</Button>
+               onClick = {() => {this.handleAddEvalCard()}}>Add Evaluation Component</Button>
             </div>
 
             <Modal 

@@ -172,52 +172,52 @@ class Data extends Component {
     }
 }
 
-// async componentDidMount(){
-//   setInterval(() => this.setState({ time: Date.now()}), 100000)
-//   try{
-//     const responseJson = await axios.get('/fetchAssignmentFeed/17103034', {
-//       headers: {
-//         'Access-Control-Allow-Origin': '*',
-//         'Content-Type': 'application/json',
-//       }
-//     })
+async componentDidMount(){
+  setInterval(() => this.setState({ time: Date.now()}), 100000)
+  try{
+    const responseJson = await axios.get('/fetchAssignmentFeed/17103034', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    })
 
-//     console.log(responseJson)
+    console.log(responseJson)
 
-//      await setAsyncTimeout(() => {
-//       this.setState({
-//         assignmentFeed: JSON.parse(JSON.stringify(responseJson.data))
-//         // resp: this.state.res
-//        })
-//   }, 1000);
+     await setAsyncTimeout(() => {
+      this.setState({
+        assignmentFeed: JSON.parse(JSON.stringify(responseJson.data))
+        // resp: this.state.res
+       })
+  }, 1000);
 
-//   }catch(error){
-//     console.log(error)
-//   }
+  }catch(error){
+    console.log(error)
+  }
 
-//   try{
-//     const responseJson = await axios.get('/fetchQuizFeed/17103034', {
-//       headers: {
-//         'Access-Control-Allow-Origin': '*',
-//         'Content-Type': 'application/json',
-//       }
-//     })
+  try{
+    const responseJson = await axios.get('/fetchQuizFeed/17103034', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    })
 
-//     console.log(responseJson)
+    console.log(responseJson)
 
-//      await setAsyncTimeout(() => {
-//       this.setState({
-//         quizFeed: JSON.parse(JSON.stringify(responseJson.data))
-//         // resp: this.state.res
-//        })
-//   }, 1000);
+     await setAsyncTimeout(() => {
+      this.setState({
+        quizFeed: JSON.parse(JSON.stringify(responseJson.data))
+        // resp: this.state.res
+       })
+  }, 1000);
 
-//   }catch(error){
-//     console.log(error)
-//   }
+  }catch(error){
+    console.log(error)
+  }
 
   
-//   }
+  }
 
   render() {
     const email = JSON.parse(localStorage.getItem('user_login'))?.data.email;
@@ -231,10 +231,10 @@ class Data extends Component {
             <Redirect to = "/" />
         </>
       )
-    // }else if(this.state.assignmentFeed === null || this.state.quizFeed === null){
-    //   return(
-    //     <LoopCircleLoading color = "red"/>
-    //   )
+    }else if(this.state.assignmentFeed === null || this.state.quizFeed === null){
+      return(
+        <LoopCircleLoading color = "red"/>
+      )
     }else{
       return (
         <div className = "outer_container_background">
@@ -244,7 +244,7 @@ class Data extends Component {
                 </div>
             </div>
            <div className = "row" style = {{justifyContent: "center"}}>
-            {/* {
+            {
               this.state.assignmentFeed.data.map((item)=> {
                   return(
                     <FeedCardA
@@ -258,7 +258,7 @@ class Data extends Component {
                     />
                   )
               })
-            } */}
+            }
            </div>
   
            <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
@@ -267,7 +267,7 @@ class Data extends Component {
                 </div>
             </div>
             <div className = "row" style = {{justifyContent: "center"}}>
-            {/* {
+            {
               this.state.quizFeed.data.map((item)=> {
                   return(
                     <FeedCardQ
@@ -282,7 +282,7 @@ class Data extends Component {
                     />
                   )
               })
-            } */}
+            }
            </div>
 
            <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
@@ -291,23 +291,7 @@ class Data extends Component {
                 </div>
             </div>
             <div className = "row" style = {{justifyContent: "center"}}>
-            {/* {
-              this.state.quizFeed.data.map((item)=> {
-                  return(
-                    <FeedCardQ
-                        key = {item.quizSubjectCode}
-                        quizSubjectCode = {item.quizSubjectCode}
-                        quizSubjectName = {item.quizSubjectName}
-                        quizTitle = {item.quizTitle}
-                        quizDate = {item.quizDate}
-                        quizTimings = {item.quizTimings} 
-                        syllabus = {item.syllabus}
-                        quizInstructions = {item.quizInstructions}
-                    />
-                  )
-              })
-            } */}
-
+          
            {
               this.state.eventFeed.map((item)=> {
                   return(

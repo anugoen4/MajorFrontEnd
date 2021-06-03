@@ -130,6 +130,8 @@ onSubmit(event){
       attendanceCount: 0
     })
 
+    window.location.reload();
+
 }
 
 handleClick(id){

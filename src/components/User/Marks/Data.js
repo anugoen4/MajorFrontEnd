@@ -32,18 +32,32 @@ function MarksCard({evaluationType, marksObtained, maximumMarks, description}){
   )
 }
 
-function ProfileHeaderCard({onClick, courseCode, courseName}){
-  return (
-    <div className = "col-xsm-6 col-sm-3 col-md-3 col-lg-2 my-3 d-flex justify-content-center">
-        <Card style={{ width: '12rem', borderRadius: "25px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}
-          onClick = {() => {onClick(courseCode, courseName)}}>
-          <CardBody>
-            <CardTitle style = {{fontSize: "18px", fontWeight: "bold", fontFamily: "cursive"}}>{courseCode}</CardTitle>
-            <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{courseName}</CardSubtitle>
-          </CardBody>
-        </Card>
-    </div>
-  )
+function ProfileHeaderCard({onClick, subjectCode, courseCode, courseName}){
+  if(subjectCode === courseCode){
+    return (
+      <div className = "col-xsm-12 col-sm-6 col-md-6 col-lg-2 my-3 d-flex justify-content-center">
+          <Card style={{ width: '12rem', borderRadius: "25px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", background: "lightblue"}}
+            onClick = {() => {onClick(courseCode, courseName)}}>
+            <CardBody>
+              <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}>{courseCode}</CardTitle>
+              <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{courseName}</CardSubtitle>
+            </CardBody>
+          </Card>
+      </div>
+    )
+  }else{
+    return (
+      <div className = "col-xsm-12 col-sm-6 col-md-6 col-lg-2 my-3 d-flex justify-content-center">
+          <Card style={{ width: '12rem', borderRadius: "25px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}
+            onClick = {() => {onClick(courseCode, courseName)}}>
+            <CardBody>
+              <CardTitle style = {{fontSize: "25px", fontWeight: "bold", fontFamily: "cursive"}}>{courseCode}</CardTitle>
+              <CardSubtitle style = {{textAlign: "center", fontFamily: 'cursive', marginTop : "5px"}}>{courseName}</CardSubtitle>
+            </CardBody>
+          </Card>
+      </div>
+    )
+  }
 }
 
 function GradeCard({title, score}){
@@ -77,7 +91,8 @@ export default class Data extends Component {
       resp:null,
       subject: null,
       c_name:null,
-      c_code:null
+      c_code:null,
+      subjectCode: ''
   };
 }
 
@@ -98,7 +113,8 @@ async handleClick(courseCode,courseName){
       this.setState({
         subject: JSON.parse(JSON.stringify(responseJson.data)),
         c_name: courseName,
-        c_code: courseCode
+        c_code: courseCode,
+        subjectCode: courseCode
        })
   },0);
   console.log(this.state.subject)
@@ -162,6 +178,7 @@ render() {
                   return(
                     <ProfileHeaderCard 
                     onClick={this.handleClick}
+                    subjectCode = {this.state.subjectCode}
                     courseCode = {item.courseCode}
                     courseName = {item.courseName}/>
                   )
@@ -174,7 +191,7 @@ render() {
               </div>
           </div>
 
-          <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
+          {/* <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
                   <GradeCard 
                       key={shortid.generate()}
                       title = "Final Marks"
@@ -185,7 +202,7 @@ render() {
                       title = "Final Grade"
                       finalMarks = {this.state.subject.data.finalGradeObtained}
                   />
-          </div>
+          </div> */}
 
               <div className = "row" style = {{justifyContent: "center"}}>
                 {
@@ -232,6 +249,7 @@ render() {
                     return(
                       <ProfileHeaderCard 
                       onClick={this.handleClick}
+                      subjectCode = {this.state.subjectCode}
                       courseCode = {item.courseCode}
                       courseName = {item.courseName}/>
                     )

@@ -68,7 +68,7 @@ export default class Data extends Component {
       
       list :[],
 
-    resList : []
+      resList : []
     }
 
     this.onSubmit = this.onSubmit.bind(this)

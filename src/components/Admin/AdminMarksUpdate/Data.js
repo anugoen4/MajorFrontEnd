@@ -10,7 +10,7 @@ import '../../../custom_styles.css'
 import axios from 'axios'
 import { LoopCircleLoading } from 'react-loadingg';
 import {Link, Redirect} from 'react-router-dom'
-
+import Select from 'react-select'
 
 function ProfileHeaderCard({onClick, subjectCode, courseCode, courseName}){
   if(subjectCode === courseCode){
@@ -57,50 +57,51 @@ export default class Data extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.state = {
       resp: null,
-      
-      quizSubjectCode: null,
-
-      quizTitle : "",
-      quizFileUpload: null,
-      quizFileUploadName : "No File Chosen",
-      quizTotalMarks : 0,
-      quizType: 'QUIZ'    
+      subjectCode: null,
+      id: '',
+      title : "",
+      fileUpload: null,
+      fileUploadName : "No File Chosen",
+      totalMarks : 0,
+      type: 'QUIZ',
+      resList : []   
     }
 
     this.onSubmit = this.onSubmit.bind(this)
-    this.onChangeQuizTitle = this.onChangeQuizTitle.bind(this)
-    this.onChangeQuizFileUpload = this.onChangeQuizFileUpload.bind(this)
-    this.onChangeQuizTotalMarks = this.onChangeQuizTotalMarks.bind(this)
-    this.onChangeQuizType = this.onChangeQuizType.bind(this)
+    this.onChangeTitle = this.onChangeTitle.bind(this)
+    this.onChangeFileUpload = this.onChangeFileUpload.bind(this)
+    this.onChangeTotalMarks = this.onChangeTotalMarks.bind(this)
+    this.onChangeType = this.onChangeType.bind(this)
   
 }
 
-onChangeQuizTitle(event){
+onChangeTitle(event){
   this.setState({
-      quizTitle : event.target.value
+    title : event.label,
+    id: event.value
   })
 }
 
-onChangeQuizFileUpload(event){
+onChangeFileUpload(event){
   event.preventDefault();
   this.setState({
-    quizFileUpload: event.target.files[0],
-    quizFileUploadName: event.target.files[0].name
+    fileUpload: event.target.files[0],
+    fileUploadName: event.target.files[0].name
   })
 
   
 }
 
-onChangeQuizTotalMarks(event){
+onChangeTotalMarks(event){
   this.setState({
-      quizTotalMarks : event.target.value
+      totalMarks : event.target.value
   })
 }
 
 
-onChangeQuizType(event){
+onChangeType(event){
   this.setState({
-      quizType : event.target.value
+      type : event.target.value
   })
 }
 
@@ -109,24 +110,24 @@ onChangeQuizType(event){
 onSubmit(event){
   event.preventDefault();
   const obj = {
-      quizTitle :this.state.quizTitle,
-      quizTotalMarks : this.state.quizTotalMarks,
-      quizType: this.state.quizType,
-      quizFileUpload : this.state.quizFileUpload,
+      title :this.state.title,
+      totalMarks : this.state.totalMarks,
+      type: this.state.type,
+      fileUpload : this.state.fileUpload,
   }
 
   const formData = new FormData();
   formData.append(
     "file",
-    this.state.quizFileUpload,
-    this.state.quizFileUpload.name
+    this.state.fileUpload,
+    this.state.fileUpload.name
   )
 
-  console.log(this.state.quizFileUploadName)
+  console.log(this.state.fileUploadName)
   console.log(formData)
 
 
-    axios.post(`/teacher/uploadMarks?courseCode=${this.state.quizSubjectCode}&description=${obj.quizTitle}&evaluationType=${this.state.quizType}&maximumMarks=${obj.quizTotalMarks}`,formData)
+    axios.post(`/teacher/uploadMarks?evaluationComponentId=${this.state.id}&courseCode=${this.state.subjectCode}&description=${obj.title}&evaluationType=${this.state.type}&maximumMarks=${obj.totalMarks}`,formData)
     .then((response) => {
         console.log(response);
     })
@@ -134,23 +135,55 @@ onSubmit(event){
       console.log(obj)
       alert("Posted")
       this.setState({
-        quizTitle : "",
-        quizFileUpload: null,
-        quizFileUploadName : "No File Chosen",
-        quizTotalMarks : 0,
-        quizType: 'QUIZ'
+        title : "",
+        fileUpload: null,
+        fileUploadName : "No File Chosen",
+        totalMarks : 0,
+        type: 'QUIZ',
+        subjectCode: ''
       })
+
+      window.location.reload()
 }
 
-handleClick(id){
+async handleClick(id){
   this.setState({
-    quizSubjectCode: id,
-    quizTitle : "",
-    quizFileUpload: null,
-    quizFileUploadName : "No File Chosen",
-    quizTotalMarks : 0,
-    quizType: 'QUIZ'
+    subjectCode: id,
+    title : "",
+    fileUpload: null,
+    fileUploadName : "No File Chosen",
+    totalMarks : 0,
+    type: 'QUIZ'
   })
+
+  try{
+    const responseJson = await axios.get(`teacher/getEvaluationComponentsForMarksUploadDropDown?teacherId=1&courseCode=${id}`, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    })
+
+
+     await setAsyncTimeout(() => {
+      const _list =  JSON.parse(JSON.stringify(responseJson.data))
+      console.log(_list.data)
+      const res = _list.data.map((item) => {
+        return ({label: item.evaluationTitle, value: item.evaluationComponentId})
+      })
+
+      console.log(res)
+    
+      this.setState({
+        resList: res,
+        subjectCode: id
+      })
+  }, 1000);
+
+  }catch(error){
+    console.log(error)
+  }
+
 }
 
 async componentDidMount(){
@@ -194,7 +227,7 @@ async componentDidMount(){
         <LoopCircleLoading color = "red"/>
       )
     }else{
-      if(this.state.quizSubjectCode === null){
+      if(this.state.subjectCode === null){
         return (
           <div className = "outer_container_background">
             <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
@@ -202,7 +235,7 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                        subjectCode = {this.state.quizSubjectCode}
+                        subjectCode = {this.state.subjectCode}
                         onClick={this.handleClick}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}/>
@@ -220,7 +253,7 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                        subjectCode = {this.state.quizSubjectCode}
+                        subjectCode = {this.state.subjectCode}
                         onClick={this.handleClick}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}/>
@@ -235,10 +268,9 @@ async componentDidMount(){
                     <div className = "form-group">
                         <div style = {{marginRight: "15px", width: "400px"}}>
                             <label>Title :</label>
-                            <input type = "text" 
-                                className = "form-control"
-                                value = {this.state.quizTitle}
-                                onChange = {this.onChangeQuizTitle}
+                            <Select options = {this.state.resList}
+                              onChange = {this.onChangeTitle}
+                              placeholder = "SELECT"
                             />
                         </div>
                     </div>
@@ -249,8 +281,8 @@ async componentDidMount(){
                           <label>Total Marks :</label>
                           <input type = "text" 
                               className = "form-control"
-                              value = {this.state.quizTotalMarks}
-                              onChange = {this.onChangeQuizTotalMarks}
+                              value = {this.state.totalMarks}
+                              onChange = {this.onChangeTotalMarks}
                           />
                         </div>
 
@@ -258,8 +290,8 @@ async componentDidMount(){
                         <label>Type :</label>
                           <select
                             className = 'form-control'
-                            value = {this.state.quizType}
-                            onChange = {this.onChangeQuizType}
+                            value = {this.state.type}
+                            onChange = {this.onChangeType}
                             style = {{width: "193px"}}
                           >
                             <option value={"QUIZ"}>Quiz</option>
@@ -279,13 +311,13 @@ async componentDidMount(){
                               id = "fileUpload"
                               type = 'file' 
                               className = "form-control"
-                              onChange = {this.onChangeQuizFileUpload}
+                              onChange = {this.onChangeFileUpload}
                               hidden
                             />
                         </div>
 
                         <div style = {{marginLeft: "-15px"}}>
-                          {this.state.quizFileUploadName}
+                          {this.state.fileUploadName}
                         </div>
                       </div>
                     </div>
