@@ -8,6 +8,7 @@ import Login from './components/Login/Login'
 import Logout from './components/LogOut/LogOut'
 import Default from './components/Default/Default'
 import Profile from './components/User/Profile/Profile'
+import Evaluation from './components/User/Evaluation/Evaluation'
 import ForgotPassword from './components/Login/ForgotPassword'
 import Admin from './components/Admin/Admin/Admin'
 import AdminQuizPost from './components/Admin/AdminQuizPost/AdminQuizPost'
@@ -30,6 +31,7 @@ class App extends Component {
           <Route path = "/marks" exact component = {Marks} />
           <Route path = "/attendance" exact component = {Attendance} />
 	        <Route path = "/profile" exact component = {Profile}/>
+          <Route path = "/evaluation" exact component = {Evaluation} />
           <Route path = "/logout" exact component = {Logout} />
           <Route path = "/admin"  exact component = {Admin} />
           <Route path = "/adminquizpost"  exact component = {AdminQuizPost} />

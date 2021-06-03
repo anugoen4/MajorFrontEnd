@@ -11,7 +11,7 @@ class AdminQuizPost extends Component {
         <NavBar />
         <div className = "OuterContainer__AdminQuizPost">
           <AdminSideBar selectPage = "adminquizpost"/>
-          <DataAdminPage />
+          <DataAdminPage/>
         </div>
      </>
     );

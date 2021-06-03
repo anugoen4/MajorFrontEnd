@@ -10,6 +10,7 @@ import '../../../custom_styles.css'
 import axios from 'axios'
 import { LoopCircleLoading } from 'react-loadingg';
 import {Link, Redirect} from 'react-router-dom'
+import Select from 'react-select'
 
 
 function ProfileHeaderCard({onClick, subjectCode, courseCode, courseName}){
@@ -58,36 +59,38 @@ export default class Data extends Component {
     this.state = {
       resp: null,
       assignmentSubjectCode: null,
-
+      assignmentId : '',
       assignmentTitle : "",
       assignmentDescription : "",
       assignmentDate : '',
       syllabus: '',
-      assignmentTimings: ''    
+      assignmentTimings: '',
+      resList : []
     }
 
     this.onSubmit = this.onSubmit.bind(this)
-    this.onChangeQuizTitle = this.onChangeQuizTitle.bind(this)
-    this.onChangeQuizDescription = this.onChangeQuizDescription.bind(this)
-    this.onChangeQuizDate = this.onChangeQuizDate.bind(this)
+    this.onChangeAssignmentTitle = this.onChangeAssignmentTitle.bind(this)
+    this.onChangeAssignmentDescription = this.onChangeAssignmentDescription.bind(this)
+    this.onChangeAssignmentDate = this.onChangeAssignmentDate.bind(this)
     this.onChangesyllabus = this.onChangesyllabus.bind(this)
-    this.onChangeQuizTimings = this.onChangeQuizTimings.bind(this)
+    this.onChangeAssignmentTimings = this.onChangeAssignmentTimings.bind(this)
   
 }
 
-onChangeQuizTitle(event){
+onChangeAssignmentTitle(event){
   this.setState({
-      assignmentTitle : event.target.value
+      assignmentTitle : event.label,
+      assignmentId: event.value
   })
 }
 
-onChangeQuizDescription(event){
+onChangeAssignmentDescription(event){
   this.setState({
       assignmentDescription : event.target.value
   })
 }
 
-onChangeQuizDate(event){
+onChangeAssignmentDate(event){
   this.setState({
       assignmentDate : event.target.value
   })
@@ -99,7 +102,7 @@ onChangesyllabus(event){
   })
 }
 
-onChangeQuizTimings(event){
+onChangeAssignmentTimings(event){
   this.setState({
       assignmentTimings : event.target.value
   })
@@ -110,6 +113,7 @@ onChangeQuizTimings(event){
 onSubmit(event){
   event.preventDefault();
   const obj = {
+      evaluationComponentId: this.state.assignmentId,
       assignmentTitle :this.state.assignmentTitle,
       deadlineDate : this.state.assignmentDate,
       deadlineTimings: this.state.assignmentTimings,
@@ -130,17 +134,47 @@ onSubmit(event){
         syllabus: '',
         assignmentTimings: ''
       })
+
+      window.location.reload()
 }
 
-handleClick(id){
+async handleClick(id){
   this.setState({
     assignmentSubjectCode: id,
-    assignmentTitle : "",
+    assignmentTitle : null,
     assignmentDescription : "",
     assignmentDate : '',
     syllabus: '',
     assignmentTimings: ''
   })
+
+
+  try{
+    const responseJson = await axios.get(`teacher/getEvaluationComponentsForDropDown?teacherId=1&courseCode=${id}&evaluationType=ASSIGNMENT`, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    })
+
+     await setAsyncTimeout(() => {
+      const _list =  JSON.parse(JSON.stringify(responseJson.data))
+      console.log(_list.data)
+      const res = _list.data.map((item) => {
+        return ({label: item.evaluationTitle, value: item.evaluationComponentId})
+      })
+
+      console.log(res)
+    
+      this.setState({
+        resList: res,
+        assignmentSubjectCode: id
+      })
+  }, 1000);
+
+  }catch(error){
+    console.log(error)
+  }
 }
 
 async componentDidMount(){
@@ -225,10 +259,9 @@ async componentDidMount(){
                     <div className = "form-group">
                         <div style = {{marginRight: "15px", width: "400px"}}>
                             <label>Title :</label>
-                            <input type = "text" 
-                                className = "form-control"
-                                value = {this.state.assignmentTitle}
-                                onChange = {this.onChangeQuizTitle}
+                            <Select options = {this.state.resList}
+                              onChange = {this.onChangeAssignmentTitle}
+                              
                             />
                         </div>
                     </div>
@@ -241,7 +274,7 @@ async componentDidMount(){
                               className = "form-control"
                               placeholder = "DD/MM/YYYY"
                               value = {this.state.assignmentDate}
-                              onChange = {this.onChangeQuizDate}
+                              onChange = {this.onChangeAssignmentDate}
                           />
                         </div>
 
@@ -250,7 +283,7 @@ async componentDidMount(){
                           <input type = "text" 
                               className = "form-control"
                               value = {this.state.assignmentTimings}
-                              onChange = {this.onChangeQuizTimings}
+                              onChange = {this.onChangeAssignmentTimings}
                           />
                         </div>
                       </div>
@@ -261,7 +294,7 @@ async componentDidMount(){
                         <textarea
                             className = "form-control"
                             value = {this.state.assignmentDescription}
-                            onChange = {this.onChangeQuizDescription}
+                            onChange = {this.onChangeAssignmentDescription}
                         />
                     </div>
 

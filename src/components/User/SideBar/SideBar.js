@@ -26,6 +26,7 @@ export default class SideBar extends Component {
         <SideBarRow link = 'library' selected = {this.state.selectedPage === 'library'} Icon = {LibraryBooksIcon} title = "Library"/>
         <SideBarRow link = 'marks' selected = {this.state.selectedPage === 'marks'} Icon = {SchoolIcon} title = "Marks"/>
         <SideBarRow link = 'attendance' selected = {this.state.selectedPage === 'attendance'} Icon = {PermContactCalendarIcon} title = "Attendance"/>
+        <SideBarRow link = 'evaluation' selected = {this.state.selectedPage === 'evaluation'} Icon = {SchoolIcon} title = "Evaluation"/>
 	      <br />
         <br />
         <br />

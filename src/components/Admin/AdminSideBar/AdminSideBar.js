@@ -28,7 +28,7 @@ export default class SideBar extends Component {
         <AdminSideBarRow link = 'adminmarksupdate' selected = {this.state.selectedPage === 'adminmarksupdate'} Icon = {SchoolIcon} title = "Update Marks"/>
         <AdminSideBarRow link = 'adminattendanceupdate' selected = {this.state.selectedPage === 'adminattendanceupdate'} Icon = {SchoolIcon} title = "Update Attendance"/>
 	      <AdminSideBarRow link = 'adminaddevaluation' selected = {this.state.selectedPage === 'adminaddevaluation'} Icon = {GradeIcon} title = "Add Evaluation Criteria"/>
-        <AdminSideBarRow link = 'adminpost' selected = {this.state.selectedPage === 'adminpost'} Icon = {ArrowUpwardIcon} title = "Dynamic Drop"/>
+        {/* <AdminSideBarRow link = 'adminpost' selected = {this.state.selectedPage === 'adminpost'} Icon = {ArrowUpwardIcon} title = "Dynamic Drop"/> */}
 	      <br />
         <br />
         <br />

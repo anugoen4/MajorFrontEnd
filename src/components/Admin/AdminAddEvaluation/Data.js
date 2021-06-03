@@ -98,48 +98,25 @@ export default class Data extends Component {
     this.onChangeWeightage = this.onChangeWeightage.bind(this)
     this.state = {
       resp: null,
-      quizSubjectCode: null,
+      subjectCode: null,
       modalOpen: false,
       card_title:'',
       card_type: '',
       card_date: '',
       Card_weightage: '',
       card_id: '',
-      evalData : [
-        {
-          id: 1,
-          type: "Quiz",
-          title: "Quiz 1",
-          date: "10/10/1000",
-          weightage: "5%"
-        },
-        {
-          id: 2,
-          type: "Assignment",
-          title: "Assignment 1",
-          date: "12/12/1200",
-          weightage: "3%"
-        },        
-        {
-          id: 3,
-          type: "PPT",
-          title: "PPT 1",
-          date: "9/9/900",
-          weightage: "1%"
-        }
-      ]
+      evalData : null
     }
 }
 
 onSubmit(event){
   event.preventDefault();
   const obj = {
-    id : this.state.card_id,
-    title : this.state.card_title,
-    type : this.state.card_type,
-    date: this.state.card_date,
-    weightage: this.state.card_weightage,
-    quizSubjectCode: this.state.quizSubjectCode
+    evaluationComponentId : this.state.card_id,
+    evaluationTitle : this.state.card_title,
+    evaluationType : this.state.card_type,
+    evaluationDate: this.state.card_date,
+    weightAge: this.state.card_weightage,
   }
 
   console.log(obj)
@@ -147,8 +124,12 @@ onSubmit(event){
     modalOpen: false
   })
 
+  axios.post(`/teacher/addEvaluationComponent?teacherId=1&courseCode=${this.state.subjectCode}`,obj)
+    .then((response) => {
+        console.log(response);
+    })
   
-  //Post New Evaluation Scheme
+  window.location.reload()
 }
 
 onChangeTitle(event){
@@ -175,10 +156,30 @@ onChangeWeightage(event){
   })
 }
 
-handleClick(id){
+async handleClick(id){
+   try{
+    const responseJson = await axios.get(`/teacher/getEvaluationComponents?teacherId=1&courseCode=${id}`, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    })
+
+    console.log("response",responseJson.data)
+
+    this.setState({
+      evalData: JSON.parse(JSON.stringify(responseJson.data))
+    }) 
+
+  }catch(error){
+    console.log(error)
+  }
+
   this.setState({
-    quizSubjectCode: id
+    subjectCode: id
   })
+
+  // console.log("Subject Code", this.state.subjectCode)
 }
 
 handleEditEvalCard({id, type, title, date,weightage}){
@@ -193,8 +194,6 @@ handleEditEvalCard({id, type, title, date,weightage}){
   })
 
   console.log(this.state.card_weightage)
-
-  // Now Update the card for this particular id
 }
 
 handleAddEvalCard(){
@@ -249,7 +248,7 @@ async componentDidMount(){
         <LoopCircleLoading color = "red"/>
       )
     }else{
-      if(this.state.quizSubjectCode === null){
+      if(this.state.subjectCode === null){
         return (
           <div className = "outer_container_background">
             <div className = "row" style = {{marginLeft: "0px", justifyContent: "center"}}> 
@@ -257,7 +256,8 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                        subjectCode = {this.state.quizSubjectCode}
+                        key = {item.courseCode}
+                        subjectCode = {this.state.subjectCode}
                         onClick={this.handleClick}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}/>
@@ -276,7 +276,8 @@ async componentDidMount(){
                     this.state.resp.data.map((item) => {
                       return(
                         <ProfileHeaderCard 
-                        subjectCode = {this.state.quizSubjectCode}
+                        key = {item.courseCode}
+                        subjectCode = {this.state.subjectCode}
                         onClick={this.handleClick}
                         courseCode = {item.courseCode}
                         courseName = {item.courseName}/>
@@ -318,6 +319,7 @@ async componentDidMount(){
                           <label>Date :</label>
                           <input type = "text" 
                               className = "form-control"
+                              placeholder = "DD/MM/YYYY"
                               value = {this.state.card_date}
                               onChange = {this.onChangeDate}
                           />
@@ -345,18 +347,21 @@ async componentDidMount(){
                 
             </Modal> 
             {
-              this.state.evalData.map((item) => {
+              this.state.evalData.data.map((item) => {
                 return(
                   <EvaluationCard 
-                    type = {item.type}
-                    id = {item.id}
+                    key = {item.evaluationComponentId}
+                    type = {item.evaluationType}
+                    id = {item.evaluationComponentId}
                     onClick={this.handleEditEvalCard}
-                    title = {item.title}
-                    date = {item.date}
-                    weightage = {item.weightage}
+                    title = {item.evaluationTitle}
+                    date = {item.evaluationDate}
+                    weightage = {item.weightAge}
                   />
                 )
               })
+
+             
             }
             </div>
             )

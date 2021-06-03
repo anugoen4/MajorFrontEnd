@@ -10,6 +10,7 @@ import '../../../custom_styles.css'
 import axios from 'axios'
 import { LoopCircleLoading } from 'react-loadingg';
 import {Link, Redirect} from 'react-router-dom'
+import Select from 'react-select'
 
 
 function ProfileHeaderCard({onClick, subjectCode, courseCode, courseName}){
@@ -57,12 +58,17 @@ export default class Data extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.state = {
       resp: null,
+      quizId: '',
       quizSubjectCode: null,
       quizTitle : "",
       quizInstructions : "",
       quizDate : '',
       syllabus: '',
-      quizTimings: ''    
+      quizTimings: ''  ,
+      
+      list :[],
+
+    resList : []
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -76,7 +82,8 @@ export default class Data extends Component {
 
 onChangeQuizTitle(event){
   this.setState({
-      quizTitle : event.target.value
+    quizTitle : event.label,
+    quizId: event.value
   })
 }
 
@@ -109,6 +116,7 @@ onChangeQuizTimings(event){
 onSubmit(event){
   event.preventDefault();
   const obj = {
+      evaluationComponentId: this.state.quizId,
       quizTitle :this.state.quizTitle,
       quizDate : this.state.quizDate,
       quizTimings: this.state.quizTimings,
@@ -116,6 +124,8 @@ onSubmit(event){
       quizInstructions : this.state.quizInstructions,
   }
 
+
+  console.log(obj)
     axios.post(`/teacher/postAQuiz?teacherId=1&courseCode=${this.state.quizSubjectCode}`,obj)
     .then((response) => {
         console.log(response);
@@ -129,16 +139,50 @@ onSubmit(event){
       syllabus: '',
       quizTimings: ''
     })
+
+    window.location.reload()
 }
 
-handleClick(id){
+async handleClick(id){
   this.setState({
     quizSubjectCode: id,
-    quizTitle : "",
+    quizTitle : null,
     quizInstructions : "",
     quizDate : '',
     syllabus: '',
     quizTimings: ''
+  })
+
+
+  try{
+    const responseJson = await axios.get(`teacher/getEvaluationComponentsForDropDown?teacherId=1&courseCode=${id}&evaluationType=QUIZ`, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      }
+    })
+
+     await setAsyncTimeout(() => {
+      const _list =  JSON.parse(JSON.stringify(responseJson.data))
+      console.log(_list.data)
+      const res = _list.data.map((item) => {
+        return ({label: item.evaluationTitle, value: item.evaluationComponentId})
+      })
+
+      console.log(res)
+    
+      this.setState({
+        resList: res,
+        quizSubjectCode: id
+      })
+  }, 1000);
+
+  }catch(error){
+    console.log(error)
+  }
+
+  this.state.resList.map((item) => {
+    console.log(item)
   })
 }
 
@@ -225,10 +269,9 @@ async componentDidMount(){
                     <div className = "form-group">
                         <div style = {{marginRight: "15px", width: "400px"}}>
                             <label>Title :</label>
-                            <input type = "text" 
-                                className = "form-control"
-                                value = {this.state.quizTitle}
-                                onChange = {this.onChangeQuizTitle}
+                            <Select options = {this.state.resList}
+                              onChange = {this.onChangeQuizTitle}
+                              placeholder = "SELECT"
                             />
                         </div>
                     </div>
