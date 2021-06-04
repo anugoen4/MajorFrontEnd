@@ -65,9 +65,9 @@ export default class Data extends Component {
       quizDate : '',
       syllabus: '',
       quizTimings: ''  ,
-      
-      list :[],
 
+      isValidDate: false,
+      errorsDate: '',
       resList : []
     }
 
@@ -94,9 +94,34 @@ onChangeQuizInstructions(event){
 }
 
 onChangeQuizDate(event){
-  this.setState({
-      quizDate : event.target.value
-  })
+  const val = event.target.value
+  var pattern = new RegExp(/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{4})$/);
+  let errors = '';
+  let flag = 0
+  if(!val){
+      errors = "Please Enter Date"
+      flag = 0
+  }else if(!pattern.test(val)){
+      errors = "Please enter valid Date "
+      flag = 0
+  }else{
+      errors = "Entered date is Valid "
+      flag = 1
+  }
+
+  if(flag === 1){
+    this.setState({
+        quizDate: val,
+        errorsDate: errors,
+        isValidDate: true
+    })
+}else{
+    this.setState({
+        quizDate: val,
+        isValidDate: false,
+        errorsDate: errors
+    })
+  }
 }
 
 onChangesyllabus(event){
@@ -286,7 +311,13 @@ async componentDidMount(){
                               value = {this.state.quizDate}
                               onChange = {this.onChangeQuizDate}
                           />
+
+                          <div className = {this.state.isValidDate ? 'InputFeedback' : 'InputFeedback_red'} >
+                            {this.state.errorsDate}
+                          </div>
+                          
                         </div>
+                        
 
                         <div style = {{marginRight: "-10px"}}>
                         <label>Timings :</label>
@@ -321,6 +352,7 @@ async componentDidMount(){
                         <input type = "submit" 
                             value = "Post" 
                             className = "btn btn-primary" 
+                            disabled = {(this.state.isValidDate) ? false : true}
                             style = {{width : "40%"}} 
                         />
                     </div>             

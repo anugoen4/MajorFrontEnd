@@ -20,3 +20,13 @@
     margin: auto;
     padding-top: 50px;
 }
+
+.InputFeedback{
+    color: green;
+    font-size: 13px;
+}
+
+.InputFeedback_red{
+    color: red;
+    font-size: 13px;
+}

@@ -61,7 +61,10 @@ export default class Data extends Component {
       attendanceFileUpload: null,
       attendanceFileUploadName : "No File Chosen",
       attendanceDate : "",
-      attendanceCount: null,    
+      attendanceCount: null,   
+      
+      isValidDate: false,
+      errorsDate: '',
     }
 
     this.onSubmit = this.onSubmit.bind(this)
@@ -83,9 +86,34 @@ onChangeAttendanceFileUpload(event){
 }
 
 onChangeAttendanceDate(event){
-  this.setState({
-      attendanceDate : event.target.value
-  })
+  const val = event.target.value
+  var pattern = new RegExp(/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{4})$/);
+  let errors = '';
+  let flag = 0
+  if(!val){
+      errors = "Please Enter Date"
+      flag = 0
+  }else if(!pattern.test(val)){
+      errors = "Please enter valid Date "
+      flag = 0
+  }else{
+      errors = "Entered date is Valid "
+      flag = 1
+  }
+
+  if(flag === 1){
+    this.setState({
+        attendanceDate: val,
+        errorsDate: errors,
+        isValidDate: true
+    })
+}else{
+    this.setState({
+        attendanceDate: val,
+        isValidDate: false,
+        errorsDate: errors
+    })
+  }
 }
 
 
@@ -235,6 +263,10 @@ async componentDidMount(){
                               onChange = {this.onChangeAttendanceDate}
                               placeholder = "DD/MM/YYYY"
                           />
+
+                          <div className = {this.state.isValidDate ? 'InputFeedback' : 'InputFeedback_red'} >
+                            {this.state.errorsDate}
+                          </div>
                         </div>
 
                         <div style = {{marginRight: "-10px"}}>
@@ -277,6 +309,7 @@ async componentDidMount(){
                             value = "Post" 
                             className = "btn btn-primary" 
                             style = {{width : "40%"}} 
+                            disabled = {(this.state.isValidDate) ? false : true}
                         />
                     </div>             
                 </form>

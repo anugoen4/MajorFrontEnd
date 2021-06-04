@@ -105,7 +105,10 @@ export default class Data extends Component {
       card_date: '',
       Card_weightage: '',
       card_id: '',
-      evalData : null
+      evalData : null,
+
+      isValidDate: false,
+      errorsDate: '',
     }
 }
 
@@ -145,9 +148,34 @@ onChangeType(event){
 }
 
 onChangeDate(event){
-  this.setState({
-      card_date : event.target.value
-  })
+  const val = event.target.value
+  var pattern = new RegExp(/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{4})$/);
+  let errors = '';
+  let flag = 0
+  if(!val){
+      errors = "Please Enter Date"
+      flag = 0
+  }else if(!pattern.test(val)){
+      errors = "Please enter valid Date "
+      flag = 0
+  }else{
+      errors = "Entered date is Valid "
+      flag = 1
+  }
+
+  if(flag === 1){
+    this.setState({
+        card_date: val,
+        errorsDate: errors,
+        isValidDate: true
+    })
+}else{
+    this.setState({
+        card_date: val,
+        isValidDate: false,
+        errorsDate: errors
+    })
+  }
 }
 
 onChangeWeightage(event){
@@ -323,6 +351,10 @@ async componentDidMount(){
                               value = {this.state.card_date}
                               onChange = {this.onChangeDate}
                           />
+
+                          <div className = {this.state.isValidDate ? 'InputFeedback' : 'InputFeedback_red'} >
+                            {this.state.errorsDate}
+                          </div>
                       </div>
 
                       <div style = {{marginRight: "15px", width: "400px"}}>
@@ -338,6 +370,7 @@ async componentDidMount(){
                             value = "Submit" 
                             className = "btn btn-primary" 
                             style = {{marginTop: "10px"}}
+                            disabled = {(this.state.isValidDate) ? false : true}
                         />
                     </div>       
                   </div>
